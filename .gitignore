@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/
+uploads/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.before-backend
+admin-backup*.html
+admin-before*.html
+admin-dashboard*.html
+admin-layout*.html
+admin-safe*.html
+.DS_Store

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Private Admin | BY_RUKAYYAH</title>
+  <style>
+    :root { color-scheme:light; --cream:#f5eee3; --paper:#fffdf9; --brown:#2a1b17; --gold:#b68a4b; --muted:#79675c; --line:#e7dbcf; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; color:var(--brown); background:radial-gradient(ellipse at 12% 0%,#fffaf4 0,transparent 42%),linear-gradient(135deg,#f4ecdf,#eee5db); font-family:"DM Sans","Segoe UI",sans-serif; }
+    .login-shell { width:min(100%,470px); padding:48px; background:rgba(255,253,249,.92); border:1px solid rgba(182,138,75,.34); box-shadow:0 26px 80px rgba(42,27,23,.13); }
+    .monogram { width:54px; height:54px; display:grid; place-items:center; border:1px solid var(--gold); color:var(--gold); font:600 21px Georgia,serif; margin-bottom:28px; }
+    .brand { margin:0; font-size:14px; letter-spacing:.22em; }
+    .subtitle { margin:6px 0 34px; color:var(--gold); font-size:9px; letter-spacing:.25em; text-transform:uppercase; }
+    .kicker { margin:0 0 9px; color:var(--gold); font-size:10px; letter-spacing:.2em; font-weight:700; }
+    h1 { margin:0; font:500 42px/1.05 Georgia,serif; }
+    .intro { margin:12px 0 28px; color:var(--muted); font-size:14px; }
+    label { display:block; margin-bottom:9px; font-size:10px; letter-spacing:.14em; font-weight:700; text-transform:uppercase; }
+    .password-wrap { display:flex; border:1px solid var(--line); background:#fff; }
+    .password-wrap:focus-within { border-color:var(--gold); box-shadow:0 0 0 3px rgba(182,138,75,.1); }
+    input { width:100%; min-width:0; border:0; outline:0; padding:15px; color:var(--brown); background:transparent; font:inherit; }
+    .toggle { padding:0 14px; border:0; background:transparent; color:var(--muted); font-size:10px; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .submit { width:100%; min-height:52px; margin-top:18px; border:0; background:var(--brown); color:#fff; font-size:10px; font-weight:700; letter-spacing:.18em; cursor:pointer; }
+    .submit:hover { background:#453027; }
+    .error { min-height:22px; margin:12px 0 0; color:#9b362f; font-size:13px; }
+    .back { display:inline-block; margin-top:26px; color:var(--muted); font-size:10px; letter-spacing:.15em; text-transform:uppercase; }
+    @media(max-width:520px) { .login-shell { padding:32px 24px; } h1 { font-size:36px; } }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <div class="monogram">BR</div>
+    <p class="brand">BY_RUKAYYAH</p>
+    <p class="subtitle">STYLE • BEAUTY • MORE</p>
+    <p class="kicker">PRIVATE ADMIN</p>
+    <h1>Welcome back.</h1>
+    <p class="intro">Enter your password to continue</p>
+    <form id="loginForm">
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input id="password" type="password" autocomplete="current-password" required autofocus>
+        <button class="toggle" id="togglePassword" type="button" aria-pressed="false">Show</button>
+      </div>
+      <p id="loginError" class="error" role="alert" aria-live="polite"></p>
+      <button class="submit" type="submit">ACCESS ADMIN</button>
+    </form>
+    <a class="back" href="shop.html">Return to the shop</a>
+  </main>
+  <script src="login.js"></script>
+</body>
+</html>

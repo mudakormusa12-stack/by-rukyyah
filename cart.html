@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Bag | BY_RUKAYYAH</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="announcement">NATIONWIDE DELIVERY • KANO & OTHER LOCATIONS</div>
+
+<header class="header">
+  <a href="index.html" class="logo">
+    <span>BR</span>
+    <div>
+      <strong>BY_RUKAYYAH</strong>
+      <small>STYLE • BEAUTY • MORE</small>
+    </div>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="index.html#collections">Collections</a>
+    <a href="index.html#story">Our Story</a>
+  </nav>
+
+  <a href="cart.html" class="bag">BAG <span id="bagCount">0</span></a>
+</header>
+
+<div class="payment-info"><h3>PAYMENT INFORMATION</h3><p>After placing your order, payment instructions will be provided through WhatsApp.</p><p>Please send your payment confirmation on WhatsApp after payment.</p></div><div class="checkout-details"><h3>DELIVERY DETAILS</h3><input id="customerName" type="text" placeholder="Full Name"><input id="customerPhone" type="tel" placeholder="Phone Number"><textarea id="customerAddress" placeholder="Delivery Address"></textarea><input id="customerCity" type="text" placeholder="City / Location"></div><main>
+
+<section class="cart-hero">
+  <p class="eyebrow">YOUR SELECTION</p>
+  <h1>Your <em>Bag.</em></h1>
+</section>
+
+<section class="cart-layout">
+
+  <div class="cart-items" id="cartItems"></div>
+
+  <aside class="cart-summary">
+    <p class="eyebrow">ORDER SUMMARY</p>
+
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <strong id="cartSubtotal">₦0</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Delivery</span>
+      <span>Calculated after order</span>
+    </div>
+
+    <div class="summary-total">
+      <span>Total</span>
+      <strong id="cartTotal">₦0</strong>
+    </div>
+
+    <button id="whatsappOrder" class="checkout-btn">
+      ORDER VIA WHATSAPP
+    </button>
+
+    <a href="shop.html" class="continue-shopping">
+      ← CONTINUE SHOPPING
+    </a>
+  </aside>
+
+</section>
+
+</main>
+
+<footer>
+  <div>
+    <strong>BY_RUKAYYAH</strong>
+    <p>STYLE • BEAUTY • MORE</p>
+  </div>
+  <div>
+    <span>KANO • NIGERIA</span>
+    <span>NATIONWIDE DELIVERY</span>
+  </div>
+  <div>
+    <span>© 2026 BY_RUKAYYAH</span>
+  </div>
+</footer>
+
+<script src="cart.js"></script>
+
+<script type="application/json" id="legacy-cart-script">
+document.addEventListener("DOMContentLoaded",()=>{
+  const CART_KEY = "byRukyyahCart";
+  const itemsContainer = document.querySelector("#cartItems");
+  const subtotalEl = document.querySelector("#cartSubtotal");
+  const totalEl = document.querySelector("#cartTotal");
+  const whatsappBtn = document.querySelector("#whatsappOrder");
+
+  function getCart(){
+    try{
+      return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function money(value){
+    return "₦" + Number(value).toLocaleString("en-NG");
+  }
+
+  function renderCart(){
+    const cart = getCart();
+
+    if(cart.length === 0){
+      itemsContainer.innerHTML = `
+        <div class="empty-cart">
+          <div>YOUR BAG IS EMPTY</div>
+          <p>Discover something beautiful from our collection.</p>
+          <a href="shop.html" class="btn btn-dark">SHOP NOW</a>
+        </div>
+      `;
+      subtotalEl.textContent = "₦0";
+      totalEl.textContent = "₦0";
+      return;
+    }
+
+    let subtotal = 0;
+
+    itemsContainer.innerHTML = cart.map((item,index)=>{
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      return `
+        <article class="cart-item">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="cart-item-info">
+            <p class="cart-category">BY_RUKAYYAH</p>
+            <h2>${item.name}</h2>
+            <strong>${money(item.price)}</strong>
+
+            <div class="quantity">
+              <button data-action="minus" data-index="${index}">−</button>
+              <span>${item.quantity}</span>
+              <button data-action="plus" data-index="${index}">+</button>
+            </div>
+
+            <button class="remove-item" data-action="remove" data-index="${index}">
+              REMOVE
+            </button>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    subtotalEl.textContent = money(subtotal);
+    totalEl.textContent = money(subtotal);
+
+    itemsContainer.querySelectorAll("[data-action]").forEach(button=>{
+      button.addEventListener("click",()=>{
+        const cart = getCart();
+        const index = Number(button.dataset.index);
+        const action = button.dataset.action;
+
+        if(action === "plus"){
+          cart[index].quantity += 1;
+        }
+
+        if(action === "minus"){
+          cart[index].quantity -= 1;
+          if(cart[index].quantity <= 0){
+            cart.splice(index,1);
+          }
+        }
+
+        if(action === "remove"){
+          cart.splice(index,1);
+        }
+
+        localStorage.setItem(CART_KEY,JSON.stringify(cart));
+        renderCart();
+
+        const count = cart.reduce((sum,item)=>sum + item.quantity,0);
+        document.querySelector("#bagCount").textContent = count;
+      });
+    });
+  }
+
+  whatsappBtn.addEventListener("click",()=>{
+    const cart = getCart();
+
+    if(cart.length === 0){
+      alert("Your bag is empty.");
+      return;
+    }
+
+    let message = "Hello BY_RUKAYYAH, I would like to place an order:%0A%0A";
+
+    cart.forEach(item=>{
+      message += "• " + item.name + " × " + item.quantity +
+        " — ₦" + (item.price * item.quantity).toLocaleString("en-NG") + "%0A";
+    });
+
+    const total = cart.reduce((sum,item)=>sum + item.price * item.quantity,0);
+
+    message += "%0ATotal: ₦" + total.toLocaleString("en-NG");
+    message += "%0A%0APlease send me the delivery details.";
+
+    const customerName=document.getElementById("customerName").value.trim(); const customerPhone=document.getElementById("customerPhone").value.trim(); const customerAddress=document.getElementById("customerAddress").value.trim(); const customerCity=document.getElementById("customerCity").value.trim(); if(!customerName || !customerPhone || !customerAddress || !customerCity){alert("Please fill in all delivery details before placing your order."); return;} message = "BY_RUKAYYAH ORDER\n====================\n\n" + message + "\n\nDELIVERY DETAILS\nName: " + customerName + "\nPhone: " + customerPhone + "\nAddress: " + customerAddress + "\nCity / Location: " + customerCity + "\n\nThank you for shopping with BY_RUKAYYAH."; const orders=JSON.parse(localStorage.getItem("byRukyyahOrders")||"[]"); orders.push({id:Date.now(),customerName,customerPhone,customerAddress,customerCity,items:cart,total,date:new Date().toISOString()}); localStorage.setItem("byRukyyahOrders",JSON.stringify(orders)); window.open("https://wa.me/2347035106484?text=" + encodeURIComponent(message),"_blank");
+  });
+
+  renderCart();
+});
+</script>
+
+</body>
+</html>

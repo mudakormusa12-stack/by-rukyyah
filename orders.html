@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BY_RUKAYYAH — Orders</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">BY_RUKAYYAH</div>
+  <nav><a href="index.html">HOME</a><a href="shop.html">SHOP</a><a href="cart.html">BAG</a><a href="admin.html">ADMIN</a></nav>
+</header>
+
+<main class="orders-page">
+  <div class="shop-hero">
+    <p class="eyebrow">PRIVATE STORE AREA</p>
+    <h1>ORDERS</h1>
+    <p>View customer orders received through the website.</p>
+  </div>
+
+  <section id="ordersList" class="orders-list"></section>
+</main>
+
+<script type="application/json" id="legacy-orders-script">
+function deleteOrder(id){
+  if(!confirm("Delete this order?")) return;
+  const orders=JSON.parse(localStorage.getItem("byRukyyahOrders")||"[]");
+  localStorage.setItem("byRukyyahOrders",JSON.stringify(orders.filter(order=>order.id!==id)));
+  location.reload();
+}
+const orders=JSON.parse(localStorage.getItem("byRukyyahOrders")||"[]");
+const container=document.getElementById("ordersList");
+
+if(!orders.length){
+  container.innerHTML="<div class=empty-cart><h2>NO ORDERS YET</h2><p>Customer orders will appear here after checkout.</p></div>";
+}else{
+  container.innerHTML=orders.slice().reverse().map(order=>`
+    <article class="order-card">
+      <div class="order-top">
+        <div>
+          <span class="order-label">ORDER</span>
+          <h2>#${order.id}</h2>
+        </div>
+        <strong>₦${Number(order.total).toLocaleString("en-NG")}</strong>
+      </div>
+      <div class="order-customer">
+        <p><b>Name:</b> ${order.customerName}</p>
+        <p><b>Phone:</b> ${order.customerPhone}</p>
+        <p><b>Address:</b> ${order.customerAddress}</p>
+        <p><b>City:</b> ${order.customerCity}</p>
+      </div>
+      <div class="order-items">
+        <h3>ITEMS</h3>
+        ${order.items.map(item=>`<p>${item.name} × ${item.quantity} — ₦${(item.price*item.quantity).toLocaleString("en-NG")}</p>`).join("")}
+      </div>
+      <p class="order-date">${new Date(order.date).toLocaleString("en-NG")}</p>
+    </article>
+  `).join("");
+}
+</script>
+<script src="orders-client.js"></script>
+</body>
+</html>

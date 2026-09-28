@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product | BY_RUKAYYAH</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="announcement">
+  STYLE • BEAUTY • MORE &nbsp; | &nbsp; NATIONWIDE DELIVERY
+</div>
+
+<header class="site-header">
+  <a href="index.html" class="brand">
+    <span class="brand-mark">BR</span>
+    <span>BY_RUKAYYAH</span>
+  </a>
+
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="shop.html">SHOP</a>
+    <a href="index.html#about">ABOUT</a>
+    <a href="index.html#contact">CONTACT</a>
+    <a href="cart.html">BAG (<span id="bagCount">0</span>)</a>
+  </nav>
+</header>
+
+<main class="product-page">
+
+  <a href="shop.html" class="back-link">← BACK TO SHOP</a>
+
+  <section class="product-detail">
+
+    <div class="product-detail-image">
+      <img id="productImage" src="images/product-1.jpg" alt="BY_RUKAYYAH product">
+    </div>
+
+    <div class="product-detail-info">
+
+      <p class="eyebrow">BY_RUKAYYAH COLLECTION</p>
+
+      <h1 id="productName">Elegant Kaftan</h1>
+
+      <p class="product-price" id="productPrice">₦35,000</p>
+
+      <div class="product-divider"></div>
+
+      <p class="product-description">
+        Discover effortless elegance with a carefully selected piece from
+        the BY_RUKAYYAH collection. Designed for women who appreciate
+        style, beauty and quality.
+      </p>
+
+      <div class="product-meta">
+        <div>
+          <span>CATEGORY</span>
+          <strong id="productCategory">KAFTANS</strong>
+        </div>
+
+        <div>
+          <span>DELIVERY</span>
+          <strong>NATIONWIDE</strong>
+        </div>
+      </div>
+
+      <button class="product-add-button" id="addProduct">
+        ADD TO BAG
+      </button>
+
+      <a href="cart.html" class="view-bag-button">
+        VIEW YOUR BAG
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div>
+    <strong>BY_RUKAYYAH</strong>
+    <p>STYLE • BEAUTY • MORE</p>
+  </div>
+
+  <p>© 2026 BY_RUKAYYAH. All rights reserved.</p>
+</footer>
+
+<script src="storefront.js"></script>
+
+<script type="application/json" id="legacy-product-script">
+document.addEventListener("DOMContentLoaded", () => {
+
+  const params = new URLSearchParams(window.location.search);
+  const product = params.get("product");
+
+  const products = {
+    "Elegant Kaftan": {
+      name: "Elegant Kaftan",
+      price: 35000,
+      image: "images/product-1.jpg",
+      category: "KAFTANS"
+    },
+    "Luxury Kaftan": {
+      name: "Luxury Kaftan",
+      price: 45000,
+      image: "images/product-2.jpg",
+      category: "KAFTANS"
+    },
+    "Beauty Collection": {
+      name: "Beauty Collection",
+      price: 18000,
+      image: "images/product-3.jpg",
+      category: "MAKEUP"
+    },
+    "Signature Jewellery": {
+      name: "Signature Jewellery",
+      price: 12500,
+      image: "images/product-4.jpg",
+      category: "JEWELLERY"
+    },
+    "Premium Phone Accessory": {
+      name: "Premium Phone Accessory",
+      price: 8500,
+      image: "images/product-5.jpg",
+      category: "ACCESSORIES"
+    },
+    "Signature Accessory": {
+      name: "Signature Accessory",
+      price: 10000,
+      image: "images/product-6.jpg",
+      category: "ACCESSORIES"
+    },
+    "Kafta": {
+      name: "Kafta",
+      price: 0,
+      image: "images/product-7.jpg",
+      category: "KAFTANS"
+    }
+  };
+
+  const item = products[product] || products["Elegant Kaftan"];
+
+  document.title = item.name + " | BY_RUKAYYAH";
+
+  document.getElementById("productName").textContent = item.name;
+  document.getElementById("productPrice").textContent =
+    "₦" + item.price.toLocaleString();
+  document.getElementById("productImage").src = item.image;
+  document.getElementById("productCategory").textContent = item.category;
+
+  document.getElementById("addProduct").addEventListener("click", () => {
+
+    const cart = JSON.parse(localStorage.getItem("byRukyyahCart")) || [];
+
+    const existing = cart.find(itemInCart => itemInCart.name === item.name);
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem("byRukyyahCart", JSON.stringify(cart));
+
+    document.getElementById("bagCount").textContent =
+      cart.reduce((total, cartItem) => total + cartItem.quantity, 0);
+
+    const button = document.getElementById("addProduct");
+    button.textContent = "ADDED ✓";
+
+    setTimeout(() => {
+      button.textContent = "ADD TO BAG";
+    }, 1200);
+  });
+
+});
+</script>
+
+</body>
+</html>
